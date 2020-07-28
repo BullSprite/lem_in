@@ -3,18 +3,43 @@
 
 #include "../libft/libft.h"
 
+typedef 			enum
+{
+					START,
+					INNER,
+					END
+}					t_type;
+
 typedef struct 		s_room
 {
-	int		idx;
-	int		name;
-}			t_room;
+	char 			*name;
+	int				x;
+	int 			y;
+	t_type			type;
+	int 			bfs_lvl;
+	int 			input_links;
+	int 			output_links;
+	int 			ants;
+	struct s_room	*next;
+}					t_room;
+
+typedef struct	s_link
+{
+	t_room			*from;
+	t_room			*where;
+	struct s_link	*prev;
+	struct s_link	*next;
+}				t_link;
 
 typedef struct		s_farm
 {
-	int		n;
-	t_room	start;
-	t_room	finish;
-	int		**farm;
+	int		ants;
+	int 	ants_at_start;
+	int 	ants_at_finish;
+	t_room	*start;
+	t_room	*finish;
+	t_room 	*rooms;
+	t_link	*links;
 }			t_farm;
 
 void	lem_in(void);

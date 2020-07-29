@@ -19,8 +19,10 @@ typedef struct 		s_room
 	int 			bfs_lvl;
 	int 			input_links;
 	int 			output_links;
+	int				links;
 	int 			ants;
 	struct s_room	*next;
+	struct s_room	**linked;
 }					t_room;
 
 typedef struct	s_link
@@ -43,4 +45,5 @@ typedef struct		s_farm
 }			t_farm;
 
 void	lem_in(void);
+t_farm	*input_parse(void);
 #endif

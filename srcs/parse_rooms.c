@@ -5,8 +5,10 @@ int 	is_int(char **parts, int id)
 	int		i;
 
 	i = -1;
+	if (parts[id][0] == '-')
+		i++;
 	while (parts[id][++i])
-		if (!ft_isdigit(parts[1][i]))
+		if (!ft_isdigit(parts[id][i]))
 		{
 			free(parts[0]);
 			free(parts[1]);
@@ -62,21 +64,21 @@ int 	room_set(t_farm *farm, char **parts, t_type type)
 	t_room	*room;
 	t_room	*tmp;
 
-	if (!(room = room_init(parts, type)))
-		return (1);
-	tmp = farm->rooms;
-	if (!tmp && (farm->rooms = room))
+	if ((tmp = farm->rooms) == tmp && !(room = room_init(parts, type)) ||
+		(!tmp && (farm->rooms = room)))
 		return (1);
 	while (tmp->next)
 	{
-		if (tmp->x == room->x && tmp->y == room->y)
+		if ((tmp->x == room->x && tmp->y == room->y) ||
+			!ft_strcmp(tmp->name, room->name))
 		{
 			free(room);
 			return (0);
 		}
 		tmp = tmp->next;
 	}
-	if (tmp->x == room->x && tmp->y == room->y)
+	if ((tmp->x == room->x && tmp->y == room->y) ||
+		!ft_strcmp(tmp->name, room->name))
 	{
 		free(room);
 		return (0);
@@ -144,7 +146,7 @@ int		parse_rooms(t_farm *farm, char *line)
 			flag = 0;
 		}
 	}
-	if (ft_strcmp(line, "# links"))
+	if (ft_strcmp(line, "# links") || flag || !(farm->start) || !(farm->finish))
 		return (error_rooms(farm, line));
 	return (1);
 }

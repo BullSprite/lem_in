@@ -28,7 +28,7 @@ int parse_ants(t_farm *farm)
 		if (!ft_isdigit(line[i]))
 		{
 			free(line);
-			return (error(farm));
+			return (error_farm(farm));
 		}
 	if ((farm->ants = ft_atoi(line)) < 1)
 	{

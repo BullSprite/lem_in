@@ -30,7 +30,6 @@ typedef struct	s_link
 {
 	t_room			*from;
 	t_room			*where;
-	struct s_link	*prev;
 	struct s_link	*next;
 }				t_link;
 
@@ -50,4 +49,8 @@ t_farm	*input_parse(void);
 int		parse_rooms(t_farm *farm, char *line);
 int 	error_farm(t_farm	*farm);
 int 	error_rooms(t_farm *farm, char *line);
+int 	is_int(char **parts, int id);
+int 	parts_len(char **parts);
+int 	parse_links(t_farm *farm, char *line);
+int		error_links(t_farm *farm, char *line, char *room1, char *room2);
 #endif

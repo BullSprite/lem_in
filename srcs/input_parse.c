@@ -5,7 +5,7 @@ t_farm 	*init_farm(void)
 	t_farm	*farm;
 
 	if (!(farm = ft_memalloc(sizeof(t_farm))))
-		return (error_farm(farm));
+		return ((t_farm *)error_farm(farm));
 	farm->ants = 0;
 	farm->ants_at_finish = 0;
 	farm->ants_at_start = 0;
@@ -36,6 +36,7 @@ int parse_ants(t_farm *farm)
 		return (error_farm(farm));
 	}
 	free(line);
+	farm->ants_at_start = farm->ants;
 	return (1);
 }
 
@@ -47,10 +48,10 @@ t_farm	*input_parse(void)
 	if (!(farm = init_farm()) || !parse_ants(farm))
 		return (0);
 	if (!get_next_line(0, &line) || ft_strcmp(line, "# rooms") ||
-		!parse_rooms(farm, line))
+		!parse_rooms(farm, line) || !parse_links(farm, line))
 	{
 		free(line);
-		return (error_farm(farm));
+		return ((t_farm *)error_farm(farm));
 	}
 	return (farm);
 }

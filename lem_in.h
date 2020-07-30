@@ -24,6 +24,22 @@ typedef struct		s_room
 	int 			q_len;
 }					t_room;
 
+typedef struct		s_path
+{
+	int		length;
+	t_room	*path;
+}					t_path;
+
+typedef struct		s_farm
+{
+	int		ants;
+	int 	ants_at_start;
+	int 	ants_at_finish;
+	t_room	*start;
+	t_room	*finish;
+	t_room 	*rooms;
+}			t_farm;
+
 void	init_queue(t_room **start);
 void	enqueue(t_room **start,t_room *r);
 t_room	*dequeue(t_room **start);

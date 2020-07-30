@@ -21,6 +21,21 @@ t_room	*map_adj(t_room **q, t_room *room, int *info)
 	return (0);
 }
 
+void	clear_state(t_room *l, int *info)
+{
+	t_room	*tmp;
+
+	tmp = l;
+	while (tmp)
+	{
+		if(tmp->id != info[0]
+		&& tmp->id != info[1]
+		&& !(tmp->child || tmp->parent))
+			tmp->state = 'u';
+		tmp = tmp->next;
+	}
+}
+
 t_room	*traverse_path(t_room *room)
 {
 	t_room	*tmp;
@@ -36,15 +51,31 @@ t_room	*traverse_path(t_room *room)
 	return (tmp);
 }
 
+t_room	**make_paths(int sup, t_room *list, int *info)
+{
+	t_room	**paths;
+	int 	i;
+
+	paths = (t_room **)ft_memalloc(sizeof(t_room *) * sup);
+	i = -1;
+	while(++i < sup)
+	{
+		if(!(paths[i] = bfs(list, info)))
+		{
+			free(paths);
+			return (0);
+		}
+		clear_state(list, info);
+	}
+	return (paths);
+}
+
 t_room	*bfs(t_room *list, int *info)
 {
 	t_room	*q;
 	t_room	*tmp;
-	int		length;
-	int 	is_valid;
 
 	q = list;
-	length = 0;
 	while (list->id != info[0])
 		q = q->next;
 	q->bfs_lvl = -1;

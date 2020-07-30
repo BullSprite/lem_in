@@ -92,5 +92,8 @@ int 	parse_links(t_farm *farm, char *line)
 		if (!create_links(farm, line))
 			error_links(farm, line, NULL, NULL);
 	}
+	if (!(farm->finish->links) || !(farm->start->links))
+		error_links(farm, line, NULL, NULL);
+	free(line);
 	return (1);
 }

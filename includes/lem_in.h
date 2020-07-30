@@ -53,4 +53,5 @@ int 	is_int(char **parts, int id);
 int 	parts_len(char **parts);
 int 	parse_links(t_farm *farm, char *line);
 int		error_links(t_farm *farm, char *line, char *room1, char *room2);
+int 	make_connections(t_farm *farm);
 #endif

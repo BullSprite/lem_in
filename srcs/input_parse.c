@@ -48,7 +48,8 @@ t_farm	*input_parse(void)
 	if (!(farm = init_farm()) || !parse_ants(farm))
 		return (0);
 	if (!get_next_line(0, &line) || ft_strcmp(line, "# rooms") ||
-		!parse_rooms(farm, line) || !parse_links(farm, line))
+		!parse_rooms(farm, line) || !parse_links(farm, line) ||
+		!make_connections(farm))
 	{
 		free(line);
 		return ((t_farm *)error_farm(farm));

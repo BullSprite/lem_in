@@ -16,7 +16,10 @@ int 	error_rooms(t_farm *farm, char *line)
 	while(farm->rooms)
 	{
 		room = farm->rooms->next;
-		free(farm->rooms->name);
+		if (farm->rooms->name)
+			free(farm->rooms->name);
+		if (farm->rooms->linked)
+			free(farm->rooms->linked);
 		free(farm->rooms);
 		farm->rooms = room;
 	}

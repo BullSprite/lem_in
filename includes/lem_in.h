@@ -16,6 +16,7 @@ typedef struct 		s_room
 	int				x;
 	int 			y;
 	t_type			type;
+	int 			idx;
 	int 			bfs_lvl;
 	int 			input_links;
 	int 			output_links;
@@ -46,4 +47,7 @@ typedef struct		s_farm
 
 void	lem_in(void);
 t_farm	*input_parse(void);
+int		parse_rooms(t_farm *farm, char *line);
+int 	error_farm(t_farm	*farm);
+int 	error_rooms(t_farm *farm, char *line);
 #endif

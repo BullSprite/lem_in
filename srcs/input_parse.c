@@ -1,18 +1,11 @@
 #include "../includes/lem_in.h"
 
-int 	error(t_farm	*farm)
-{
-	free(farm);
-	ft_putstr("ERROR");
-	return 0;
-}
-
 t_farm 	*init_farm(void)
 {
 	t_farm	*farm;
 
-	if (!(farm = ft_memalloc(sizeof(t_farm*))))
-		return (error(farm));
+	if (!(farm = ft_memalloc(sizeof(t_farm))))
+		return (error_farm(farm));
 	farm->ants = 0;
 	farm->ants_at_finish = 0;
 	farm->ants_at_start = 0;
@@ -28,8 +21,8 @@ int parse_ants(t_farm *farm)
 	char	*line;
 	int 	i;
 
-	if (!get_next_line(0, &line))
-		return (error(farm));
+	if (!(get_next_line(0, &line)))
+		return (error_farm(farm));
 	i = -1;
 	while (line[++i])
 		if (!ft_isdigit(line[i]))
@@ -37,7 +30,11 @@ int parse_ants(t_farm *farm)
 			free(line);
 			return (error(farm));
 		}
-	farm->ants = ft_atoi(line);
+	if ((farm->ants = ft_atoi(line)) < 1)
+	{
+		free(line);
+		return (error_farm(farm));
+	}
 	free(line);
 	return (1);
 }
@@ -49,5 +46,11 @@ t_farm	*input_parse(void)
 
 	if (!(farm = init_farm()) || !parse_ants(farm))
 		return (0);
+	if (!get_next_line(0, &line) || ft_strcmp(line, "# rooms") ||
+		!parse_rooms(farm, line))
+	{
+		free(line);
+		return (error_farm(farm));
+	}
 	return (farm);
 }

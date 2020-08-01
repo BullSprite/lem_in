@@ -21,6 +21,7 @@ typedef struct 		s_room
 	struct s_room	*next_q;
 	struct s_room	*child;
 	int 			path_len;
+	int 			is_linked_with_start;
 	char			type;
 	char			state;
 	int				level;
@@ -50,7 +51,6 @@ typedef struct		s_farm
 	int 	ants_at_finish;
 	t_room	*start;
 	t_room	*finish;
-	t_room	**paths;
 	t_room 	*rooms;
 	t_link	*links;
 }			t_farm;

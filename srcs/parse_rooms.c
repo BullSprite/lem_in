@@ -23,6 +23,7 @@ t_room	*room_init(char **parts, t_type type)
 	room->links = 0;
 	room->ants  =0;
 	room->next = NULL;
+	room->is_linked_with_start = 0;
 	room->linked = NULL;
 	room->state = 'u';
 	room->parent = 0;

@@ -20,6 +20,7 @@ typedef struct 		s_room
 	struct s_room	*parent;
 	struct s_room	*next_q;
 	struct s_room	*child;
+	struct s_room	*ant_queue;
 	int 			path_len;
 	int 			is_linked_with_start;
 	char			type;
@@ -33,7 +34,8 @@ typedef struct 		s_room
 	int 			input_count;
 	int 			q_len;
 	int 			idx;
-	int 			ants;
+	int 			ant;
+	int 			step;
 	int				*capacity;
 }					t_room;
 
@@ -46,14 +48,15 @@ typedef struct	s_link
 
 typedef struct		s_farm
 {
-	int		ants;
-	int 	ants_at_start;
-	int 	ants_at_finish;
-	t_room	*start;
-	t_room	*finish;
-	t_room 	*rooms;
-	t_link	*links;
-}			t_farm;
+	int				ants;
+	int 			ants_at_start;
+	int 			ants_at_finish;
+	int 			step;
+	t_room			*start;
+	t_room			*finish;
+	t_room 			*rooms;
+	t_link			*links;
+}				t_farm;
 
 void	lem_in(void);
 t_farm	*input_parse(void);
@@ -72,4 +75,5 @@ t_room	*bfs(t_room *list, t_farm *farm);
 t_room	**make_paths(t_room *list, t_farm *farm);
 int 	string_type(char *line);
 int		parse_room(t_farm *farm, char *line, int flag);
+void	ants_way(t_farm *farm);
 #endif

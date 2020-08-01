@@ -21,13 +21,15 @@ t_room	*room_init(char **parts, t_type type)
 	room->input_links = 0;
 	room->output_links = 0;
 	room->links = 0;
-	room->ants  =0;
+	room->ant = -1;
 	room->next = NULL;
 	room->is_linked_with_start = 0;
 	room->linked = NULL;
 	room->state = 'u';
 	room->parent = 0;
 	room->child = 0;
+	room->ant_queue = NULL;
+	room->step = -1;
 	free(parts[1]);
 	free(parts[2]);
 	free(parts);
@@ -94,10 +96,7 @@ void 	make_start_or_finish(t_farm *farm, char *line, t_type type)
 	while (tmp->next)
 		tmp = tmp->next;
 	if (type == START)
-	{
 		farm->start = tmp;
-		farm->start->ants = farm->ants_at_start;
-	}
 	else
 		farm->finish = tmp;
 }

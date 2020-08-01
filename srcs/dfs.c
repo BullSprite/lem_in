@@ -185,7 +185,7 @@ t_room	*bfs(t_room *list, t_farm *farm)
 	t_room	*ret;
 
 	q = list;
-	while (list->idx != farm->start->idx)
+	while (q->idx != farm->start->idx)
 		q = q->next;
 	enqueue(&q, q);
 	q->state = 'd';

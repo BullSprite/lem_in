@@ -101,29 +101,21 @@ void 	make_start_or_finish(t_farm *farm, char *line, t_type type)
 		farm->finish = tmp;
 }
 
-int		parse_rooms(t_farm *farm, char *line)
+int		parse_room(t_farm *farm, char *line, int flag)
 {
-	int	flag;
-
-	flag = 0;
-	while (get_next_line(0, &line) && ft_strcmp(line, "# links"))
+	if (!flag)
 	{
-		if (!flag)
-		{
-			if (!ft_strcmp(line, "##start"))
-				flag = 1;
-			else if (!ft_strcmp(line, "##end"))
-				flag = 2;
-			else
-				make_room(farm, line, INNER);
-		}
+		if (!ft_strcmp(line, "##start"))
+			flag = 1;
+		else if (!ft_strcmp(line, "##end"))
+			flag = 2;
 		else
-		{
-			make_start_or_finish(farm, line, (flag == 1 ? START : END));
-			flag = 0;
-		}
+			make_room(farm, line, INNER);
 	}
-	if (ft_strcmp(line, "# links") || flag || !(farm->start) || !(farm->finish))
-		return (error_rooms(farm, line));
-	return (1);
+	else
+	{
+		make_start_or_finish(farm, line, (flag == 1 ? START : END));
+		flag = 0;
+	}
+	return (flag);
 }

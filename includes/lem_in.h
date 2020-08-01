@@ -62,7 +62,7 @@ int 	error_farm(t_farm	*farm);
 int 	error_rooms(t_farm *farm, char *line);
 int 	is_int(char **parts, int id);
 int 	parts_len(char **parts);
-int 	parse_links(t_farm *farm, char *line);
+int 	parse_links(t_farm *farm, char *line, int mode);
 int		error_links(t_farm *farm, char *line, char *room1, char *room2);
 int 	make_connections(t_farm *farm);
 void	init_queue(t_room **start);
@@ -70,4 +70,6 @@ void	enqueue(t_room **start,t_room *r);
 t_room	*dequeue(t_room **start);
 t_room	*bfs(t_room *list, t_farm *farm);
 t_room	**make_paths(t_room *list, t_farm *farm);
+int 	string_type(char *line);
+int		parse_room(t_farm *farm, char *line, int flag);
 #endif

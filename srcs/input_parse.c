@@ -9,6 +9,7 @@ t_farm 	*init_farm(void)
 	farm->ants = 0;
 	farm->ants_at_finish = 0;
 	farm->ants_at_start = 0;
+	farm->step = 0;
 	farm->finish = NULL;
 	farm->start = NULL;
 	farm->rooms = NULL;

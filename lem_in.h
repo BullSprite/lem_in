@@ -5,11 +5,6 @@ typedef struct		s_room
 	char 			*name;
 	int				x;
 	int 			y;
-	struct s_room	*next;
-	struct s_room	**linked;
-	struct s_room	*parent;
-	struct s_room	*next_q;
-	struct s_room	*child;
 	int 			path_len;
 	char			type;
 	char			state;
@@ -22,6 +17,14 @@ typedef struct		s_room
 	int 			input_count;
 	int				id;
 	int 			q_len;
+	struct s_room	*next;
+	struct s_room	**linked;
+	struct s_room	*parent;
+	struct s_room	*next_q;
+	struct s_room	*child;
+	int		str_p;
+	int		rev_p;
+	struct s_room	*from;
 }					t_room;
 
 typedef struct		s_path

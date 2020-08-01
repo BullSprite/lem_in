@@ -3,8 +3,22 @@
 
 int main(int argc, char **argv)
 {
+	t_room **paths;
 	t_farm	*farm;
+	int 	*info;
+
+	info = ft_memalloc(3*sizeof(int));
 	farm = input_parse();
+	info[0] = farm->start->idx;
+	info[1] = farm->finish->idx;
+
+	farm->paths = make_paths(farm->rooms, farm);
+
+	/*if ((paths = bfs(farm->rooms, info)) == 0)
+	{
+		printf("s\n");
+	}*/
+
 	printf("%d\n", farm->ants);
 	return 0;
 }

@@ -23,6 +23,7 @@ t_room	*room_init(char **parts, t_type type)
 	room->links = 0;
 	room->ant = -1;
 	room->next = NULL;
+	room->path_len = MAXINT;
 	room->is_linked_with_start = 0;
 	room->linked = NULL;
 	room->state = 'u';

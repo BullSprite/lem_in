@@ -127,16 +127,17 @@ int 	find_parent(t_room *r1)
 	}
 	return (0);
 }
-t_room	*traverse_path(t_room *room, t_farm *farm, int path_len)
+t_room	*traverse_path(t_room *room, t_farm *farm)
 {
 	t_room	*tmp;
 	t_room	*tmp_p;
 
 	tmp = room;
 	tmp_p = 0;
+	if (room->path_len == MAXINT)
+		room->path_len = 0;
 	while(1)
 	{
-		++path_len;
 		if(get_capacity(tmp, tmp->parent) == 0)
 		{
 			set_capacity(tmp->parent, tmp, 0);
@@ -146,7 +147,8 @@ t_room	*traverse_path(t_room *room, t_farm *farm, int path_len)
 		set_capacity(tmp, tmp->child, 0);
 		set_capacity(tmp->parent, tmp, 0);
 		if(tmp_p)
-			traverse_path(tmp_p,farm, tmp_p->path_len);
+			traverse_path(tmp_p,farm);
+		tmp->path_len = tmp->child->idx == farm->finish->idx ? 1 : tmp->child->path_len + 1;
 		if (!(tmp->is_linked_with_start))
 		{
 			tmp->parent->child = tmp;
@@ -155,7 +157,7 @@ t_room	*traverse_path(t_room *room, t_farm *farm, int path_len)
 		else
 			break;
 	}
-	tmp->path_len = path_len;
+	tmp->path_len += 1;
 	return (tmp);
 }
 
@@ -168,12 +170,9 @@ t_room	**make_paths(t_room *list, t_farm *farm)
 	init_capacity(list, farm);
 	while(ret = bfs(list, farm))
 	{
-		++i;
-		ret = traverse_path(ret,farm, 0);
+		ret = traverse_path(ret,farm);
 		clear_state(list, farm);
-		ret->path_len += 1;
 	}
-
 	return (farm->start->linked);
 }
 

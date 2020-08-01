@@ -3,6 +3,7 @@
 
 #include "../libft/libft.h"
 
+# define MAXINT (1U << 31U) - 1
 typedef 			enum
 {
 					START,
@@ -57,6 +58,7 @@ typedef struct		s_farm
 	t_room 			*rooms;
 	t_link			*links;
 }				t_farm;
+
 
 void	lem_in(void);
 t_farm	*input_parse(void);

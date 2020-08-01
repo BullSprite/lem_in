@@ -8,16 +8,6 @@ void	right_path_len(t_farm *farm)
 	t_room	*tmp;
 
 	i = -1;
-	while ((len = 1) && (tmp = (farm->start->linked)[++i]))
-	{
-		while (tmp != farm->finish)
-		{
-			len++;
-			tmp = tmp->child;
-		}
-		((farm->start->linked)[i])->path_len = len;
-	}
-	i = -1;
 	while ((farm->start->linked)[++i] && ((j = i) == j))
 		while ((farm->start->linked)[++j])
 			if (((farm->start->linked)[i])->path_len >
@@ -54,6 +44,26 @@ void		farm_delition(t_farm *farm)
 	free(farm);
 }
 
+void	print_paths(t_room *start)
+{
+	int		i;
+	t_room	*tmp;
+
+	i = -1;
+	while (++i < start->links)
+	{
+		tmp = start->linked[i];
+		if (tmp->path_len != MAXINT)
+		{
+			while(tmp)
+			{
+				printf("%s ", tmp->name);
+				tmp = tmp->child;
+			}
+			printf("\n");
+		}
+	}
+}
 int 	main(int argc, char **argv)
 {
 	t_room **paths;
@@ -66,8 +76,9 @@ int 	main(int argc, char **argv)
 	info[1] = farm->finish->idx;
 
 	make_paths(farm->rooms, farm);
-	right_path_len(farm);
-	ants_way(farm);
-	farm_delition(farm);
+	print_paths(farm->start);
+	//right_path_len(farm);
+	//ants_way(farm);
+	//farm_delition(farm);
 	return 0;
 }

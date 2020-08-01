@@ -12,13 +12,7 @@ int main(int argc, char **argv)
 	info[0] = farm->start->idx;
 	info[1] = farm->finish->idx;
 
-	farm->paths = make_paths(farm->rooms, farm);
-
-	/*if ((paths = bfs(farm->rooms, info)) == 0)
-	{
-		printf("s\n");
-	}*/
-
+	make_paths(farm->rooms, farm);
 	printf("%d\n", farm->ants);
 	return 0;
 }

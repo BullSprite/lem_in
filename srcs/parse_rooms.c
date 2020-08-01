@@ -24,6 +24,9 @@ t_room	*room_init(char **parts, t_type type)
 	room->ants  =0;
 	room->next = NULL;
 	room->linked = NULL;
+	room->state = 'u';
+	room->parent = 0;
+	room->child = 0;
 	free(parts[1]);
 	free(parts[2]);
 	free(parts);

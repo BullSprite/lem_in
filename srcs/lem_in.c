@@ -4,7 +4,6 @@ void	right_path_len(t_farm *farm)
 {
 	int		i;
 	int 	j;
-	int		len;
 	t_room	*tmp;
 
 	i = -1;
@@ -17,6 +16,18 @@ void	right_path_len(t_farm *farm)
 				(farm->start->linked)[i] = (farm->start->linked)[j];
 				(farm->start->linked)[j] = tmp;
 			}
+	i = -1;
+	while ((farm->start->linked)[++i] && (j = -1))
+	{
+		if ((farm->start->linked)[i]->path_len == 2147483647) {
+			(farm->start->linked)[i] = 0;
+			return;
+		}
+		while (++j < i)
+			(farm->start->linked)[i]->real_len +=
+					(farm->start->linked)[i]->path_len -
+					(farm->start->linked)[j]->path_len;
+	}
 }
 
 void		farm_delition(t_farm *farm)
@@ -53,11 +64,11 @@ void	print_paths(t_room *start)
 	while (++i < start->links)
 	{
 		tmp = start->linked[i];
-		if (tmp->path_len != MAXINT)
+		if (tmp)
 		{
 			while(tmp)
 			{
-				printf("%s ", tmp->name);
+				printf("%d ", tmp->path_len);
 				tmp = tmp->child;
 			}
 			printf("\n");
@@ -76,9 +87,11 @@ int 	main(int argc, char **argv)
 	info[1] = farm->finish->idx;
 
 	make_paths(farm->rooms, farm);
+	right_path_len(farm);
 	print_paths(farm->start);
-	//right_path_len(farm);
-	//ants_way(farm);
-	//farm_delition(farm);
+	ants_way(farm);
+	farm_delition(farm);
+	ft_putnbr(farm->step);
+	ft_putchar('\n');
 	return 0;
 }

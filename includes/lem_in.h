@@ -34,6 +34,7 @@ typedef struct 		s_room
 	int				links;
 	int 			input_count;
 	int 			q_len;
+	int 			real_len;
 	int 			idx;
 	int 			ant;
 	int 			step;

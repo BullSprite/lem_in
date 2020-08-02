@@ -31,6 +31,7 @@ t_room	*room_init(char **parts, t_type type)
 	room->child = 0;
 	room->ant_queue = NULL;
 	room->step = -1;
+	room->real_len = 0;
 	free(parts[1]);
 	free(parts[2]);
 	free(parts);

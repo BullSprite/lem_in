@@ -69,14 +69,14 @@ void	move_ant_from_start(t_farm *farm, int flag)
 			if (i == 0)
 				flag = make_move(farm, farm->start,
 						  ((farm->start->linked)[i]), flag);
-			else if (((farm->start->linked)[0])->child->path_len ==
-						((farm->start->linked)[i])->child->path_len ||
-						(farm->ants_at_start - 2 >=
-						 ((farm->start->linked)[i])->child->path_len))
+			else if (((farm->start->linked)[0])->path_len ==
+						((farm->start->linked)[i])->path_len ||
+						(farm->ants_at_start  >=
+						((farm->start->linked)[i])->real_len))
 				flag = make_move(farm, farm->start, (farm->start->linked)[i],
 				flag);
-			else if (((farm->start->linked)[0])->child->path_len !=
-					  ((farm->start->linked)[i])->child->path_len)
+			else if (((farm->start->linked)[0])->path_len !=
+					  ((farm->start->linked)[i])->path_len)
 				return ;
 
 		}

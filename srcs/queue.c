@@ -33,7 +33,7 @@ t_room	*dequeue(t_room **start)
 
 	tmp = *start;
 	q_len = (*start)->q_len;
-	if (!start || !*start || (*start)->q_len == 0)
+	if (!start || !(*start) || (*start)->q_len == 0)
 		return (0);
 	if ((*start)->q_len == 1)
 	{

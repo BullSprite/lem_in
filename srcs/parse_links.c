@@ -42,16 +42,20 @@ void 	set_link(t_farm *farm, char *line, t_room *from, t_room *where)
 			if ((tmp->from == link->from && tmp->where == link->where) ||
 				(tmp->where == link->from && tmp->from == link->where))
 			{
+				from->links -= 1;
+				where->links -= 1;
 				free(link);
-				error_links(farm, line, NULL, NULL);
+				return ;
 			}
 			tmp = tmp->next;
 		}
 		if ((tmp->from == link->from && tmp->where == link->where) ||
 			(tmp->where == link->from && tmp->from == link->where))
 		{
+			from->links -= 1;
+			where->links -= 1;
 			free(link);
-			error_links(farm, line, NULL, NULL);
+			return ;
 		}
 		tmp->next = link;
 	}

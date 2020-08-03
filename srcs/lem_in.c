@@ -55,7 +55,33 @@ void		farm_delition(t_farm *farm)
 	free(farm);
 }
 
-void	print_paths(t_room *start)
+void	measure_paths(t_room *start, t_farm *farm)
+{
+	int		i;
+	int		path_len;
+	t_room	*tmp;
+
+	i = -1;
+	while (++i < start->links)
+	{
+		tmp = start->linked[i];
+		path_len = 1;
+		if (tmp)
+		{
+			while(tmp->child != 0)
+			{
+				path_len++;
+				tmp = tmp->child;
+			}
+			if (tmp->idx == farm->finish->idx)
+				start->linked[i]->path_len = path_len;
+			else
+				start->linked[i]->path_len = MAXINT;
+		}
+	}
+}
+
+void	print_paths(t_room *start, t_farm *farm)
 {
 	int		i;
 	t_room	*tmp;
@@ -66,15 +92,17 @@ void	print_paths(t_room *start)
 		tmp = start->linked[i];
 		if (tmp)
 		{
+			printf("|%d| ", tmp->path_len);
 			while(tmp)
 			{
-				printf("%d ", tmp->path_len);
+				printf("%d ", tmp->idx);
 				tmp = tmp->child;
 			}
 			printf("\n");
 		}
 	}
 }
+
 int 	main(int argc, char **argv)
 {
 	t_room **paths;
@@ -86,12 +114,16 @@ int 	main(int argc, char **argv)
 	info[0] = farm->start->idx;
 	info[1] = farm->finish->idx;
 
+	printf("input\n");
+
+
 	make_paths(farm->rooms, farm);
+	measure_paths(farm->start, farm);
 	right_path_len(farm);
-	print_paths(farm->start);
-	ants_way(farm);
-	farm_delition(farm);
-	ft_putnbr(farm->step);
-	ft_putchar('\n');
+	print_paths(farm->start, farm);
+	//ants_way(farm);
+	//farm_delition(farm);
+	//ft_putnbr(farm->step);
+	//ft_putchar('\n');
 	return 0;
 }

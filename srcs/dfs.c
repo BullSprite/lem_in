@@ -29,45 +29,25 @@ int		set_capacity(t_room *r1, t_room *r2, int cap)
 	return (-1);
 }
 
-t_room	*find_room_with_capacity(t_room *r1, int cap)
-{
-	int i;
-
-	i = -1;
-	while (++i < r1->links)
-	{
-		if(get_capacity(r1->linked[i],r1) == cap)
-			return (r1->linked[i]);
-	}
-	return (0);
-}
 t_room	*map_adj(t_room **q, t_room *room, t_farm *farm)
 {
 	int i;
-	t_room	*r;
 
 	i = -1;
-	if (room->is_linked_with_start == 0 && room->child)
-	{
-		r = find_room_with_capacity(room, 0);
-		enqueue(q,r);
-		r->parent = room;
-		return (0);
-	}
 	while (++i < room->links)
 	{
 		if(room->linked[i]->idx == farm->finish->idx)
 		{
-			room->child = farm->finish;
+			if (room->idx != farm->start->idx)
+				room->child = farm->finish;
 			return (room);
 		}
 		if(room->linked[i]->state == 'u'
-		&& room->capacity[i] == 1
-		&& room->linked[i]->idx != farm->start->idx)
+		&& room->capacity[i] == 1)
 		{
 			enqueue(q,room->linked[i]);
 			room->linked[i]->state = 'd';
-			room->linked[i]->parent = room;
+			room->linked[i]->bfs_parent = room;
 		}
 	}
 	return (0);
@@ -111,52 +91,50 @@ int		init_capacity(t_room *l, t_farm *farm)
 	}
 }
 
-int 	find_parent(t_room *r1)
-{
-	int i;
-
-	i = -1;
-	while (++i < r1->links)
-	{
-		if (get_capacity(r1->linked[i], r1) == 0
-		&& get_capacity(r1, r1->linked[i]) == 1)
-		{
-			r1->parent = r1->linked[i];
-			return (1);
-		}
-	}
-	return (0);
-}
 t_room	*traverse_path(t_room *room, t_farm *farm)
 {
 	t_room	*tmp;
-	t_room	*tmp_p;
 
 	tmp = room;
-	tmp_p = 0;
-	if (room->path_len == MAXINT)
-		room->path_len = 0;
+	if (room->idx == farm->start->idx)
+	{
+		set_capacity(room,farm->finish, 0);
+		room->child = 0;
+		farm->finish->path_len = 1;
+		return (tmp);
+	}
+	if (room->parent != 0)
+	{
+		while (1)
+		{
+			set_capacity(tmp->bfs_parent, tmp, 0);
+			if (tmp->bfs_parent->idx == farm->start->idx)
+			{
+				tmp->path_len = MAXINT;
+				return (tmp);
+			}
+			tmp = tmp->bfs_parent;
+		}
+	}
+	room->path_len = 1;
 	while(1)
 	{
-		if(get_capacity(tmp, tmp->parent) == 0)
+		if(tmp->bfs_parent->idx == farm->start->idx)
 		{
-			set_capacity(tmp->parent, tmp, 0);
-			tmp_p = tmp->parent;
-			find_parent(tmp);
+			set_capacity(farm->start, tmp, 0);
+			break ;
 		}
-		set_capacity(tmp, tmp->child, 0);
-		set_capacity(tmp->parent, tmp, 0);
-		if(tmp_p)
-			traverse_path(tmp_p,farm);
-		tmp->path_len = tmp->child->idx == farm->finish->idx ? 1 : tmp->child->path_len + 1;
-		if (!(tmp->is_linked_with_start))
+		set_capacity(tmp->bfs_parent, tmp, 0);
+		if (tmp->parent == 0)
 		{
+			tmp->parent = tmp->bfs_parent;
 			tmp->parent->child = tmp;
-			tmp = tmp->parent;
 		}
-		else
-			break;
+		if (tmp->child)
+			tmp->path_len = tmp->child->idx == farm->finish->idx ? 1 : tmp->child->path_len + 1;
+		tmp = tmp->bfs_parent;
 	}
+	tmp->path_len = tmp->child->path_len + 1;
 	tmp->path_len += 1;
 	return (tmp);
 }
@@ -188,7 +166,7 @@ t_room	*bfs(t_room *list, t_farm *farm)
 		q = q->next;
 	enqueue(&q, q);
 	q->state = 'd';
-	while(q && q->q_len)
+	while(q)
 	{
 		tmp = dequeue(&q);
 		tmp->state = 'p';

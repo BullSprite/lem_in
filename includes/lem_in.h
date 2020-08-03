@@ -19,6 +19,7 @@ typedef struct 		s_room
 	struct s_room	*next;
 	struct s_room	**linked;
 	struct s_room	*parent;
+	struct s_room	*bfs_parent;
 	struct s_room	*next_q;
 	struct s_room	*child;
 	struct s_room	*ant_queue;
@@ -78,5 +79,7 @@ t_room	*bfs(t_room *list, t_farm *farm);
 t_room	**make_paths(t_room *list, t_farm *farm);
 int 	string_type(char *line);
 int		parse_room(t_farm *farm, char *line, int flag);
+int		get_capacity(t_room *r1, t_room *r2);
+int		set_capacity(t_room *r1, t_room *r2, int cap);
 void	ants_way(t_farm *farm);
 #endif

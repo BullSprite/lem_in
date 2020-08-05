@@ -32,22 +32,28 @@ int		set_capacity(t_room *r1, t_room *r2, int cap)
 t_room	*map_adj(t_room **q, t_room *room, t_farm *farm)
 {
 	int i;
+	static int kek;
 
 	i = -1;
+
+
 	while (++i < room->links)
 	{
-		if(room->linked[i]->idx == farm->finish->idx)
+		if (room->child && room->capacity[i]
+		&& get_capacity(room->linked[i], room)
+		&& get_capacity(room, room->bfs_parent))
 		{
-			if (room->idx != farm->start->idx)
-				room->child = farm->finish;
-			return (room);
+			//printf("fuck you kek\n");
+			kek = kek;
+			//room->linked[i]->state = 'd';
+			continue;
 		}
 		if(room->linked[i]->state == 'u'
 		&& room->capacity[i] == 1)
 		{
 			enqueue(q,room->linked[i]);
-			room->linked[i]->state = 'd';
 			room->linked[i]->bfs_parent = room;
+			room->linked[i]->state = 'd';
 		}
 	}
 	return (0);
@@ -60,11 +66,8 @@ void	clear_state(t_room *l, t_farm *farm)
 	tmp = l;
 	while (tmp)
 	{
-		if(tmp->idx != farm->start->idx
-		&& tmp->idx != farm->finish->idx)
-			tmp->state = 'u';
-		tmp->bfs_lvl = 0;
-		tmp->q_len = 0;
+		tmp->state = 'u';
+		tmp->next_q = 0;
 		tmp = tmp->next;
 	}
 }
@@ -96,33 +99,28 @@ t_room	*traverse_path(t_room *room, t_farm *farm)
 	t_room	*tmp;
 
 	tmp = room;
-	if (room->idx == farm->start->idx)
+	if (tmp->bfs_parent->idx == farm->start->idx)
 	{
 		set_capacity(room,farm->finish, 0);
 		room->child = 0;
 		farm->finish->path_len = 1;
 		return (tmp);
 	}
-	if (room->parent != 0)
-	{
-		while (1)
-		{
-			set_capacity(tmp->bfs_parent, tmp, 0);
-			if (tmp->bfs_parent->idx == farm->start->idx)
-			{
-				tmp->path_len = MAXINT;
-				return (tmp);
-			}
-			tmp = tmp->bfs_parent;
-		}
-	}
-	room->path_len = 1;
+	set_capacity(tmp->bfs_parent, tmp, 0);
+	tmp->bfs_parent->child = tmp;
+	tmp = tmp->bfs_parent;
 	while(1)
 	{
 		if(tmp->bfs_parent->idx == farm->start->idx)
 		{
+			tmp->parent = tmp->bfs_parent;
 			set_capacity(farm->start, tmp, 0);
 			break ;
+		}
+		if(tmp->parent && get_capacity(tmp->bfs_parent, tmp) && get_capacity(tmp, tmp->bfs_parent) && get_capacity(tmp->parent, tmp) == 0)
+		{
+			tmp->parent = tmp->bfs_parent;
+			tmp->parent->child = tmp;
 		}
 		set_capacity(tmp->bfs_parent, tmp, 0);
 		if (tmp->parent == 0)
@@ -130,8 +128,7 @@ t_room	*traverse_path(t_room *room, t_farm *farm)
 			tmp->parent = tmp->bfs_parent;
 			tmp->parent->child = tmp;
 		}
-		if (tmp->child)
-			tmp->path_len = tmp->child->idx == farm->finish->idx ? 1 : tmp->child->path_len + 1;
+		tmp->path_len = tmp->child->path_len + 1;
 		tmp = tmp->bfs_parent;
 	}
 	tmp->path_len = tmp->child->path_len + 1;
@@ -142,15 +139,37 @@ t_room	*traverse_path(t_room *room, t_farm *farm)
 t_room	**make_paths(t_room *list, t_farm *farm)
 {
 	int 	i;
+	int		c;
+	int tmp = MAXINT;
 	t_room	*ret;
 
 	i = -1;
+	c = 0;
 	init_capacity(list, farm);
 	while(ret = bfs(list, farm))
 	{
+		c++;
+		++i;
+		if (i >= farm->start->links)
+			break;
 		ret = traverse_path(ret,farm);
 		clear_state(list, farm);
+		measure_paths(farm->start, farm);
+		right_path_len(farm);
+		//print_paths(farm->start, farm);
+		//printf("------------------------------\n");
+
+		ants_way(farm);
+		//if (farm->step >= tmp)
+			//return (0);
+		tmp = farm->step;
+		ft_putnbr(farm->step);
+		ft_putchar('\n');
 	}
+	//ft_putnbr(farm->step);
+	ft_putchar('\n');
+	if (!c)
+		return (0);
 	return (farm->start->linked);
 }
 
@@ -162,6 +181,7 @@ t_room	*bfs(t_room *list, t_farm *farm)
 	t_room	*ret;
 
 	q = list;
+
 	while (q->idx != farm->start->idx)
 		q = q->next;
 	enqueue(&q, q);
@@ -169,9 +189,10 @@ t_room	*bfs(t_room *list, t_farm *farm)
 	while(q)
 	{
 		tmp = dequeue(&q);
+		if (tmp->idx == farm->finish->idx)
+			return (tmp);
 		tmp->state = 'p';
-		if (ret = map_adj(&q, tmp, farm))
-			return (ret);
+		map_adj(&q, tmp, farm);
 	}
 	return (0);
 }

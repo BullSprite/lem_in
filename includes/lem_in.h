@@ -54,6 +54,7 @@ typedef struct		s_farm
 	int				ants;
 	int 			ants_at_start;
 	int 			ants_at_finish;
+	int				print;
 	int 			step;
 	t_room			*start;
 	t_room			*finish;
@@ -82,4 +83,7 @@ int		parse_room(t_farm *farm, char *line, int flag);
 int		get_capacity(t_room *r1, t_room *r2);
 int		set_capacity(t_room *r1, t_room *r2, int cap);
 void	ants_way(t_farm *farm);
+void	right_path_len(t_farm *farm);
+void	measure_paths(t_room *start, t_farm *farm);
+void	print_paths(t_room *start, t_farm *farm);
 #endif

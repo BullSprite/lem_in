@@ -5,22 +5,28 @@ void	right_path_len(t_farm *farm)
 	int		i;
 	int 	j;
 	t_room	*tmp;
+	int		tmp1;
 
 	i = -1;
-	while ((farm->start->linked)[++i] && ((j = i) == j))
+	while ((farm->start->linked)[++i] && ((j = i) == j)) {
+		(farm->start->linked)[i]->real_len = 0;
 		while ((farm->start->linked)[++j])
 			if (((farm->start->linked)[i])->path_len >
-				((farm->start->linked)[j])->path_len)
-			{
+				((farm->start->linked)[j])->path_len) {
 				tmp = (farm->start->linked)[i];
 				(farm->start->linked)[i] = (farm->start->linked)[j];
 				(farm->start->linked)[j] = tmp;
+				tmp1 = farm->start->capacity[i];
+				(farm->start->capacity)[i] = (farm->start->capacity)[j];
+				(farm->start->capacity)[j] = tmp1;
 			}
+	}
 	i = -1;
 	while ((farm->start->linked)[++i] && (j = -1))
 	{
 		if ((farm->start->linked)[i]->path_len == 2147483647) {
-			(farm->start->linked)[i] = 0;
+			//(farm->start->linked)[i] = 0;
+			(farm->start->linked)[i]->real_len = MAXINT;
 			return;
 		}
 		while (++j < i)
@@ -75,8 +81,8 @@ void	measure_paths(t_room *start, t_farm *farm)
 			}
 			if (tmp->idx == farm->finish->idx)
 				start->linked[i]->path_len = path_len;
-			else
-				start->linked[i]->path_len = MAXINT;
+			//else
+				//start->linked[i]->path_len = MAXINT;
 		}
 	}
 }
@@ -92,13 +98,16 @@ void	print_paths(t_room *start, t_farm *farm)
 		tmp = start->linked[i];
 		if (tmp)
 		{
-			printf("|%d| ", tmp->path_len);
-			while(tmp)
+			if (tmp->path_len != MAXINT)
 			{
-				printf("%d ", tmp->idx);
-				tmp = tmp->child;
+				printf("|%d| ", tmp->path_len);
+				while(tmp)
+				{
+					printf("%d ", tmp->idx);
+					tmp = tmp->child;
+				}
+				printf("\n");
 			}
-			printf("\n");
 		}
 	}
 }
@@ -107,20 +116,20 @@ int 	main(int argc, char **argv)
 {
 	t_room **paths;
 	t_farm	*farm;
-	int 	*info;
 
-	info = ft_memalloc(3*sizeof(int));
 	farm = input_parse();
-	info[0] = farm->start->idx;
-	info[1] = farm->finish->idx;
 
-	printf("input\n");
+	farm->print = 0;
+	farm->finish->path_len = 0;
+	if(!make_paths(farm->rooms, farm))
+	{
+		printf("what?");
+		return (0);
+	}
+	//measure_paths(farm->start, farm);
+	//right_path_len(farm);
+	//print_paths(farm->start, farm);
 
-
-	make_paths(farm->rooms, farm);
-	measure_paths(farm->start, farm);
-	right_path_len(farm);
-	print_paths(farm->start, farm);
 	//ants_way(farm);
 	//farm_delition(farm);
 	//ft_putnbr(farm->step);

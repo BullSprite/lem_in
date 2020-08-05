@@ -50,7 +50,8 @@ int 	make_move(t_farm *farm, t_room *from, t_room *where, int flag)
 		farm->start->ant_queue = tmp->ant_queue;
 		tmp->ant_queue = NULL;
 	}
-	print_move(where, flag);
+	if (farm->print)
+		print_move(where, flag);
 	add_ant_queue(farm, where);
 	return (1);
 }
@@ -60,7 +61,7 @@ void	move_ant_from_start(t_farm *farm, int flag)
 	int i;
 
 	i = -1;
-	while((farm->start->linked)[++i])
+	while((farm->start->linked)[++i]->path_len != MAXINT)
 	{
 		if (farm->ants_at_start == 0)
 			return ;
@@ -87,6 +88,8 @@ void	ants_way(t_farm *farm)
 {
 	int flag;
 
+	farm->step = 0;
+	farm->ants_at_start = farm->ants;
 	while ((farm->ants_at_start) || (farm->start->ant_queue))
 	{
 		flag = 0;
@@ -95,7 +98,8 @@ void	ants_way(t_farm *farm)
 			flag = make_move(farm, farm->start->ant_queue,
 			 farm->start->ant_queue->child, flag);
 		move_ant_from_start(farm, flag);
-		print_move(NULL, 0);
+		if (farm->print)
+			print_move(NULL, 0);
 		farm->step++;
 	}
 }

@@ -56,23 +56,23 @@ int 	string_type(char *line)
 		return (2);
 }
 
-int		parse_rooms(t_farm *farm, char *line)
+int		parse_rooms(t_farm *farm, char **line)
 {
 	int	flag;
 	int	stype;
 
 	flag = 0;
-	while (get_next_line(0, &line))
+	while (get_next_line(0, line))
 	{
-		if ((stype = string_type(line)) == 3)
+		if ((stype = string_type(*line)) == 3)
 			continue;
 		if (stype == 2)
 		{
 			if (flag || !(farm->start) || !(farm->finish))
-				return (error_rooms(farm, line));
-			return (parse_links(farm, line, 1));
+				return (error_rooms(farm, *line));
+			return (parse_links(farm, *line, 1));
 		}
-		flag = parse_room(farm, line, flag);
+		flag = parse_room(farm, *line, flag);
 	}
 	return (0);
 }
@@ -84,7 +84,7 @@ t_farm	*input_parse(void)
 
 	if (!(farm = init_farm()) || !parse_ants(farm))
 		return (0);
-	if (!parse_rooms(farm, line) || !make_connections(farm))
+	if (!parse_rooms(farm, &line) || !make_connections(farm))
 	{
 		free(line);
 		return ((t_farm *)error_farm(farm));

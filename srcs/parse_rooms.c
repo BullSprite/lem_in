@@ -48,16 +48,14 @@ int 	room_set(t_farm *farm, char **parts, t_type type)
 		return (1);
 	while (tmp->next)
 	{
-		if ((tmp->x == room->x && tmp->y == room->y) ||
-			!ft_strcmp(tmp->name, room->name))
+		if (!ft_strcmp(tmp->name, room->name))
 		{
 			free(room);
 			return (0);
 		}
 		tmp = tmp->next;
 	}
-	if ((tmp->x == room->x && tmp->y == room->y) ||
-		!ft_strcmp(tmp->name, room->name))
+	if (!ft_strcmp(tmp->name, room->name))
 	{
 		free(room);
 		return (0);

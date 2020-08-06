@@ -16,6 +16,9 @@ typedef struct 		s_room
 	char 			*name;
 	int				x;
 	int 			y;
+	int				best_path_len;
+	struct s_room	*best_child;
+	struct s_room	*best_parent;
 	struct s_room	*next;
 	struct s_room	**linked;
 	struct s_room	*parent;
@@ -54,6 +57,7 @@ typedef struct		s_farm
 	int				ants;
 	int 			ants_at_start;
 	int 			ants_at_finish;
+	int				print;
 	int 			step;
 	t_room			*start;
 	t_room			*finish;
@@ -64,7 +68,7 @@ typedef struct		s_farm
 
 void	lem_in(void);
 t_farm	*input_parse(void);
-int		parse_rooms(t_farm *farm, char *line);
+int		parse_rooms(t_farm *farm, char **line);
 int 	error_farm(t_farm	*farm);
 int 	error_rooms(t_farm *farm, char *line);
 int 	is_int(char **parts, int id);
@@ -82,4 +86,7 @@ int		parse_room(t_farm *farm, char *line, int flag);
 int		get_capacity(t_room *r1, t_room *r2);
 int		set_capacity(t_room *r1, t_room *r2, int cap);
 void	ants_way(t_farm *farm);
+void	right_path_len(t_farm *farm);
+void	measure_paths(t_room *start, t_farm *farm);
+void	print_paths(t_room *start, t_farm *farm, int flag);
 #endif

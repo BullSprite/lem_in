@@ -83,10 +83,14 @@ t_room	*bfs(t_room *list, t_farm *farm);
 t_room	**make_paths(t_room *list, t_farm *farm);
 int 	string_type(char *line);
 int		parse_room(t_farm *farm, char *line, int flag);
-int		get_capacity(t_room *r1, t_room *r2);
-int		set_capacity(t_room *r1, t_room *r2, int cap);
+int		get_cap(t_room *r1, t_room *r2);
+int		set_cap(t_room *r1, t_room *r2, int cap);
 void	ants_way(t_farm *farm);
 void	right_path_len(t_farm *farm);
 void	measure_paths(t_room *start, t_farm *farm);
 void	print_paths(t_room *start, t_farm *farm, int flag);
+int		get_cap(t_room *r1, t_room *r2);
+int		set_cap(t_room *r1, t_room *r2, int cap);
+void	clear_state(t_room *l, t_farm *farm, int flag);
+int		init_capacity(t_room *l, t_farm *farm);
 #endif

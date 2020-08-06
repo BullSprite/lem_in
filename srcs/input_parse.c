@@ -5,7 +5,7 @@ t_farm 	*init_farm(void)
 	t_farm	*farm;
 
 	if (!(farm = ft_memalloc(sizeof(t_farm))))
-		return ((t_farm *)error_farm(farm));
+		error_farm(farm);
 	farm->ants = 0;
 	farm->ants_at_finish = 0;
 	farm->ants_at_start = 0;

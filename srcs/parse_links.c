@@ -18,7 +18,7 @@ t_link 	*init_link(t_farm *farm, char *line, t_room *from, t_room *where)
 {
 	t_link	*link;
 
-	if (!(link = ft_memalloc(sizeof(link))))
+	if (!(link = ft_memalloc(sizeof(t_link))))
 		error_links(farm, line, NULL, NULL);
 	link->from = from;
 	link->where = where;

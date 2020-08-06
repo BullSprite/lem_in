@@ -137,8 +137,8 @@ int 	main(int argc, char **argv)
 		error_links(farm,NULL,NULL,NULL);
 	farm->print = 1;
 	ants_way(farm);
-	farm_delition(farm);
 	ft_putnbr(farm->step);
 	ft_putchar('\n');
+	farm_delition(farm);
 	return 0;
 }

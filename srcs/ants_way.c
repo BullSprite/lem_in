@@ -92,6 +92,11 @@ void	ants_way(t_farm *farm)
 {
 	int flag;
 
+	if (farm->print)
+	{
+		print_map(farm->commands);
+		ft_putchar('\n');
+	}
 	farm->step = 0;
 	farm->ants_at_start = farm->ants;
 	while ((farm->ants_at_start) || (farm->start->ant_queue))

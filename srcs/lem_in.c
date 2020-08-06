@@ -134,25 +134,11 @@ int 	main(int argc, char **argv)
 	farm->print = 0;
 	farm->finish->path_len = 0;
 	if(!make_paths(farm->rooms, farm))
-	{
-		printf("what?");
-		return (0);
-	}
-	//farm->print = 1;
-
+		error_links(farm,NULL,NULL,NULL);
+	farm->print = 1;
 	ants_way(farm);
-	//ants_way(farm);
-	//ft_putchar('\n');
 	farm_delition(farm);
 	ft_putnbr(farm->step);
 	ft_putchar('\n');
-	//measure_paths(farm->start, farm);
-	//right_path_len(farm);
-	//print_paths(farm->start, farm);
-
-	//ants_way(farm);
-	//farm_delition(farm);
-	//ft_putnbr(farm->step);
-	//ft_putchar('\n');
 	return 0;
 }

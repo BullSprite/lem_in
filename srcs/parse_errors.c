@@ -39,11 +39,14 @@ int		error_links(t_farm *farm, char *line, char *room1, char *room2)
 		free(room1);
 	if (room2)
 		free(room2);
-	while(farm->links)
+	if (farm->links)
 	{
-		link = farm->links->next;
-		free(farm->links);
-		farm->links = link;
+		while(farm->links)
+		{
+			link = farm->links->next;
+			free(farm->links);
+			farm->links = link;
+		}
 	}
 	return (error_rooms(farm, line));
 }

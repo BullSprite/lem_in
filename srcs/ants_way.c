@@ -29,6 +29,8 @@ void	print_move(t_room *where, int flag)
 		ft_putchar(' ');
 	ft_putchar('L');
 	ft_putnbr(where->ant);
+	if (where->type == END)
+		where->ant = -1;
 	ft_putchar('-');
 	ft_putstr(where->name);
 }
@@ -53,6 +55,8 @@ int 	make_move(t_farm *farm, t_room *from, t_room *where, int flag)
 	if (farm->print)
 		print_move(where, flag);
 	add_ant_queue(farm, where);
+	if (where->type == END && !(farm->print))
+		where->ant = -1;
 	return (1);
 }
 
@@ -61,7 +65,7 @@ void	move_ant_from_start(t_farm *farm, int flag)
 	int i;
 
 	i = -1;
-	while((farm->start->linked)[++i]->path_len != MAXINT)
+	while((farm->start->linked)[++i] && (farm->start->linked)[i]->path_len != MAXINT)
 	{
 		if (farm->ants_at_start == 0)
 			return ;
@@ -96,7 +100,7 @@ void	ants_way(t_farm *farm)
 		while (farm->start->ant_queue && farm->start->ant_queue->step ==
 				farm->step)
 			flag = make_move(farm, farm->start->ant_queue,
-			 farm->start->ant_queue->child, flag);
+					farm->start->ant_queue->child, flag);
 		move_ant_from_start(farm, flag);
 		if (farm->print)
 			print_move(NULL, 0);

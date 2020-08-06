@@ -8,11 +8,13 @@ void	right_path_len(t_farm *farm)
 	int		tmp1;
 
 	i = -1;
-	while ((farm->start->linked)[++i] && ((j = i) == j)) {
-		(farm->start->linked)[i]->real_len = 0;
+	while ((farm->start->linked)[++i] && ((j = i) == j))
+	{
 		while ((farm->start->linked)[++j])
+		{
 			if (((farm->start->linked)[i])->path_len >
-				((farm->start->linked)[j])->path_len) {
+				((farm->start->linked)[j])->path_len)
+			{
 				tmp = (farm->start->linked)[i];
 				(farm->start->linked)[i] = (farm->start->linked)[j];
 				(farm->start->linked)[j] = tmp;
@@ -20,12 +22,13 @@ void	right_path_len(t_farm *farm)
 				(farm->start->capacity)[i] = (farm->start->capacity)[j];
 				(farm->start->capacity)[j] = tmp1;
 			}
+		}
+		(farm->start->linked)[i]->real_len = 0;
 	}
 	i = -1;
 	while ((farm->start->linked)[++i] && (j = -1))
 	{
 		if ((farm->start->linked)[i]->path_len == 2147483647) {
-			//(farm->start->linked)[i] = 0;
 			(farm->start->linked)[i]->real_len = MAXINT;
 			return;
 		}
@@ -87,7 +90,7 @@ void	measure_paths(t_room *start, t_farm *farm)
 	}
 }
 
-void	print_paths(t_room *start, t_farm *farm)
+void	print_paths(t_room *start, t_farm *farm, int flag)
 {
 	int		i;
 	t_room	*tmp;
@@ -98,13 +101,13 @@ void	print_paths(t_room *start, t_farm *farm)
 		tmp = start->linked[i];
 		if (tmp)
 		{
-			if (tmp->path_len != MAXINT)
+			if (flag ? tmp->best_path_len : tmp->path_len != MAXINT)
 			{
-				printf("|%d| ", tmp->path_len);
+				printf("|%d| ", flag ? tmp->best_path_len : tmp->path_len);
 				while(tmp)
 				{
 					printf("%d ", tmp->idx);
-					tmp = tmp->child;
+					tmp = flag ? tmp->best_child : tmp->child;
 				}
 				printf("\n");
 			}
@@ -126,6 +129,14 @@ int 	main(int argc, char **argv)
 		printf("what?");
 		return (0);
 	}
+	//farm->print = 1;
+
+	ants_way(farm);
+	//ants_way(farm);
+	//ft_putchar('\n');
+	farm_delition(farm);
+	ft_putnbr(farm->step);
+	ft_putchar('\n');
 	//measure_paths(farm->start, farm);
 	//right_path_len(farm);
 	//print_paths(farm->start, farm);

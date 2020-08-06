@@ -69,7 +69,7 @@ void	clear_state(t_room *l, int flag)
 	}
 }
 
-void		init_capacity(t_room *l)
+void	init_capacity(t_room *l)
 {
 	t_room	*tmp;
 	int		i;

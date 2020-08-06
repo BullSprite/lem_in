@@ -1,6 +1,6 @@
 #include "../includes/lem_in.h"
 
-void	right_path_len(t_farm *farm)
+void	sort_paths(t_farm *farm)
 {
 	int		i;
 	int 	j;
@@ -25,6 +25,14 @@ void	right_path_len(t_farm *farm)
 		}
 		(farm->start->linked)[i]->real_len = 0;
 	}
+}
+
+void	right_path_len(t_farm *farm)
+{
+	int		i;
+	int 	j;
+
+	sort_paths(farm);
 	i = -1;
 	while ((farm->start->linked)[++i] && (j = -1))
 	{
@@ -56,8 +64,9 @@ void		farm_delition(t_farm *farm)
 	{
 		tmpr = farm->rooms->next;
 		free(farm->rooms->linked);
+		if (farm->rooms->capacity)
+			free(farm->rooms->capacity);
 		free(farm->rooms->name);
-		free(farm->rooms->capacity);
 		free(farm->rooms);
 		farm->rooms = tmpr;
 	}

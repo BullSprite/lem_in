@@ -18,6 +18,7 @@ t_room	*room_init(char **parts, t_type type)
 	room->type = type;
 	room->idx = 0;
 	room->bfs_lvl = 0;
+	room->capacity = 0;
 	room->input_links = 0;
 	room->output_links = 0;
 	room->links = 0;

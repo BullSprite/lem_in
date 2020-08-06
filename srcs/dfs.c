@@ -12,7 +12,7 @@
 
 #include "../includes/lem_in.h"
 
-t_room	*map_adj(t_room **q, t_room *room, t_farm *farm)
+t_room	*map_adj(t_room **q, t_room *room)
 {
 	int	i;
 	int	r_r_bfs_cap;
@@ -94,8 +94,8 @@ t_room	**make_paths(t_room *list, t_farm *farm)
 
 	i = -1;
 	tmp_step = MAXINT;
-	init_capacity(list, farm);
-	while (ret = bfs(list, farm))
+	init_capacity(list);
+	while ((ret = bfs(list, farm)))
 	{
 		++i;
 		if (i >= farm->start->links)
@@ -104,11 +104,11 @@ t_room	**make_paths(t_room *list, t_farm *farm)
 		measure_paths(farm->start, farm);
 		right_path_len(farm);
 		ants_way(farm);
-		clear_state(list, farm, farm->step < tmp_step ? 1 : 0);
+		clear_state(list, farm->step < tmp_step ? 1 : 0);
 		if (farm->step < tmp_step)
 			tmp_step = farm->step;
 	}
-	clear_state(list, farm, 2);
+	clear_state(list, 2);
 	right_path_len(farm);
 	if (i == -1)
 		return (0);
@@ -131,7 +131,7 @@ t_room	*bfs(t_room *list, t_farm *farm)
 		if (tmp->idx == farm->finish->idx)
 			return (tmp);
 		tmp->state = 'p';
-		map_adj(&q, tmp, farm);
+		map_adj(&q, tmp);
 	}
 	return (0);
 }

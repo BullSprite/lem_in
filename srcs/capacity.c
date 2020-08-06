@@ -43,7 +43,7 @@ int		set_cap(t_room *r1, t_room *r2, int cap)
 	return (-1);
 }
 
-void	clear_state(t_room *l, t_farm *farm, int flag)
+void	clear_state(t_room *l, int flag)
 {
 	t_room	*tmp;
 
@@ -69,7 +69,7 @@ void	clear_state(t_room *l, t_farm *farm, int flag)
 	}
 }
 
-int		init_capacity(t_room *l, t_farm *farm)
+void		init_capacity(t_room *l)
 {
 	t_room	*tmp;
 	int		i;

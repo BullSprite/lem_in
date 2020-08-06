@@ -14,13 +14,14 @@ t_farm 	*init_farm(void)
 	farm->start = NULL;
 	farm->rooms = NULL;
 	farm->links = NULL;
+	farm->commands = NULL;
 	return (farm);
 }
 
 int parse_ants(t_farm *farm)
 {
-	char	*line;
-	int 	i;
+	char		*line;
+	int 		i;
 
 	if (!(get_next_line(0, &line)))
 		return (error_farm(farm));
@@ -28,28 +29,37 @@ int parse_ants(t_farm *farm)
 	while (line[++i])
 		if (!ft_isdigit(line[i]))
 		{
-			free(line);
+			ft_strdel(&line);
 			return (error_farm(farm));
 		}
 	if ((farm->ants = ft_atoi(line)) < 1)
 	{
-		free(line);
+		ft_strdel(&line);
 		return (error_farm(farm));
 	}
-	free(line);
 	farm->ants_at_start = farm->ants;
+	if (!(farm->commands = ft_memalloc(sizeof(t_command))) ||
+		!(farm->commands->line = ft_strdup(line)))
+		error_farm(farm);
+	farm->commands->next = NULL;
+	ft_strdel(&line);
 	return (1);
 }
 
-int 	string_type(char *line)
+int 	string_type(t_farm *farm, char *line)
 {
-	int len;
+	t_command	*command;
 
-	len = ft_strlen(line);
-	if (len > 1 && line[0] == '#' && line[1] == '#')
-		return (1);
-	else if (len > 0 && line[0] == '#')
+	if (line[0] == '#' && !(!ft_strcmp(line, "##start") ||
+		!ft_strcmp(line, "##end")))
 		return (3);
+	if (!(command = ft_memalloc(sizeof(t_command))) ||
+		!(command->line = ft_strdup(line)))
+		error_links(farm, line, NULL, NULL);
+	command->next = farm->commands;
+	farm->commands = command;
+	if (line[0] == '#')
+		return (1);
 	else if (ft_strchr(line, ' '))
 		return (1);
 	else
@@ -64,17 +74,30 @@ int		parse_rooms(t_farm *farm, char **line)
 	flag = 0;
 	while (get_next_line(0, line))
 	{
-		if ((stype = string_type(*line)) == 3)
-			continue;
-		if (stype == 2)
+		if ((stype = string_type(farm, *line)) != 3)
 		{
-			if (flag || !(farm->start) || !(farm->finish))
-				return (error_rooms(farm, *line));
-			return (parse_links(farm, *line, 1));
+			if (stype == 2)
+			{
+				if (flag || !(farm->start) || !(farm->finish))
+					return (error_rooms(farm, *line));
+				return (parse_links(farm, *line, 1));
+			}
+			flag = parse_room(farm, *line, flag);
 		}
-		flag = parse_room(farm, *line, flag);
+		ft_strdel(line);
 	}
 	return (0);
+}
+
+void	print_map(t_command *command)
+{
+	if (command == NULL)
+		return ;
+	print_map(command->next);
+	ft_putstr(command->line);
+	ft_putchar('\n');
+	free(command->line);
+	free(command);
 }
 
 t_farm	*input_parse(void)
@@ -82,12 +105,11 @@ t_farm	*input_parse(void)
 	t_farm	*farm;
 	char	*line;
 
+	line = NULL;
 	if (!(farm = init_farm()) || !parse_ants(farm))
 		return (0);
 	if (!parse_rooms(farm, &line) || !make_connections(farm))
-	{
-		free(line);
-		return ((t_farm *)error_farm(farm));
-	}
+		error_links(farm, line, NULL, NULL);
+	print_map(farm->commands);
 	return (farm);
 }

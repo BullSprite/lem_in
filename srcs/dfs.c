@@ -175,7 +175,7 @@ t_room	**make_paths(t_room *list, t_farm *farm)
 		measure_paths(farm->start, farm);
 		right_path_len(farm);
 		ants_way(farm);
-		clear_state(list, farm->step < tmp_step ? 1  : 0);
+		clear_state(list, farm, farm->step < tmp_step ? 1  : 0);
 		if (farm->step < tmp_step)
 			tmp_step = farm->step;
 	}

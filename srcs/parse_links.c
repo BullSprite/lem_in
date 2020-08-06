@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_links.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: swynona <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/06 19:12:15 by swynona           #+#    #+#             */
+/*   Updated: 2020/08/06 22:12:15 by swynona          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
-t_room	*find_room(t_farm * farm, char *name)
+t_room	*find_room(t_farm *farm, char *name)
 {
 	t_room	*tmp;
 
@@ -14,11 +26,11 @@ t_room	*find_room(t_farm * farm, char *name)
 	return (0);
 }
 
-t_link 	*init_link(t_farm *farm, char *line, t_room *from, t_room *where)
+t_link	*init_link(t_farm *farm, char *line, t_room *from, t_room *where)
 {
 	t_link	*link;
 
-	if (!(link = ft_memalloc(sizeof(link))))
+	if (!(link = ft_memalloc(sizeof(t_link))))
 		error_links(farm, line, NULL, NULL);
 	link->from = from;
 	link->where = where;
@@ -28,7 +40,7 @@ t_link 	*init_link(t_farm *farm, char *line, t_room *from, t_room *where)
 	return (link);
 }
 
-void 	set_link(t_farm *farm, char *line, t_room *from, t_room *where)
+void	set_link(t_farm *farm, char *line, t_room *from, t_room *where)
 {
 	t_link	*link;
 	t_link	*tmp;
@@ -48,20 +60,14 @@ void 	set_link(t_farm *farm, char *line, t_room *from, t_room *where)
 				return ;
 			}
 			tmp = tmp->next;
-		}
-		if ((tmp->from == link->from && tmp->where == link->where) ||
-			(tmp->where == link->from && tmp->from == link->where))
-		{
-			from->links -= 1;
-			where->links -= 1;
-			free(link);
-			return ;
+			if (!(tmp->next))
+				break ;
 		}
 		tmp->next = link;
 	}
 }
 
-int 	create_links(t_farm *farm, char *line)
+int		create_links(t_farm *farm, char *line)
 {
 	char	*dash;
 	char	*from_name;
@@ -89,7 +95,7 @@ int 	create_links(t_farm *farm, char *line)
 	return (0);
 }
 
-int 	parse_links(t_farm *farm, char *line, int mode)
+int		parse_links(t_farm *farm, char *line, int mode)
 {
 	if (mode && !create_links(farm, line))
 		error_links(farm, line, NULL, NULL);

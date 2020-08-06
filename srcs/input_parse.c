@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_parse.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: swynona <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/06 19:12:15 by swynona           #+#    #+#             */
+/*   Updated: 2020/08/06 22:12:15 by swynona          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
-t_farm 	*init_farm(void)
+t_farm	*init_farm(void)
 {
 	t_farm	*farm;
 
 	if (!(farm = ft_memalloc(sizeof(t_farm))))
-		return ((t_farm *)error_farm(farm));
+		error_farm(farm);
 	farm->ants = 0;
 	farm->ants_at_finish = 0;
 	farm->ants_at_start = 0;
@@ -18,10 +30,10 @@ t_farm 	*init_farm(void)
 	return (farm);
 }
 
-int parse_ants(t_farm *farm)
+int		parse_ants(t_farm *farm)
 {
 	char		*line;
-	int 		i;
+	int			i;
 
 	if (!(get_next_line(0, &line)))
 		return (error_farm(farm));
@@ -46,11 +58,12 @@ int parse_ants(t_farm *farm)
 	return (1);
 }
 
-int 	string_type(t_farm *farm, char *line)
+int		string_type(t_farm *farm, char *line)
 {
 	t_command	*command;
 
-	if (!(ft_strncmp(line, "##", 2)) && !(!ft_strcmp(line, "##start") || !ft_strcmp(line, "##end")))
+	if (!(ft_strncmp(line, "##", 2)) &&
+	!(!ft_strcmp(line, "##start") || !ft_strcmp(line, "##end")))
 		return (3);
 	if (!(command = ft_memalloc(sizeof(t_command))) ||
 		!(command->line = ft_strdup(line)))

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   capacity.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: swynona <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/06 19:12:15 by swynona           #+#    #+#             */
+/*   Updated: 2020/08/06 22:12:15 by swynona          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
 int		get_cap(t_room *r1, t_room *r2)
@@ -67,13 +79,9 @@ int		init_capacity(t_room *l, t_farm *farm)
 	{
 		tmp->capacity = (int *)ft_memalloc(sizeof(int) * tmp->links);
 		i = -1;
-		if (tmp->idx == farm->start->idx)
-			tmp->is_linked_with_start = 1;
 		while (++i < tmp->links)
 		{
 			tmp->capacity[i] = 1;
-			if (tmp->linked[i]->idx == farm->start->idx)
-				tmp->is_linked_with_start = 1;
 		}
 		tmp = tmp->next;
 	}

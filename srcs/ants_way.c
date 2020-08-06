@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ants_way.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: swynona <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/06 19:12:15 by swynona           #+#    #+#             */
+/*   Updated: 2020/08/06 22:12:15 by swynona          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
-void 	add_ant_queue(t_farm *farm, t_room *room_to_add)
+void	add_ant_queue(t_farm *farm, t_room *room_to_add)
 {
 	t_room	*tmp;
 
@@ -35,7 +47,7 @@ void	print_move(t_room *where, int flag)
 	ft_putstr(where->name);
 }
 
-int 	make_move(t_farm *farm, t_room *from, t_room *where, int flag)
+int		make_move(t_farm *farm, t_room *from, t_room *where, int flag)
 {
 	t_room *tmp;
 
@@ -65,7 +77,8 @@ void	move_ant_from_start(t_farm *farm, int flag)
 	int i;
 
 	i = -1;
-	while((farm->start->linked)[++i] && (farm->start->linked)[i]->path_len != MAXINT)
+	while ((farm->start->linked)[++i] &&
+	(farm->start->linked)[i]->path_len != MAXINT)
 	{
 		if (farm->ants_at_start == 0)
 			return ;
@@ -73,17 +86,16 @@ void	move_ant_from_start(t_farm *farm, int flag)
 		{
 			if (i == 0)
 				flag = make_move(farm, farm->start,
-						  ((farm->start->linked)[i]), flag);
+					((farm->start->linked)[i]), flag);
 			else if (((farm->start->linked)[0])->path_len ==
 						((farm->start->linked)[i])->path_len ||
-						(farm->ants_at_start  >=
+						(farm->ants_at_start >=
 						((farm->start->linked)[i])->real_len))
 				flag = make_move(farm, farm->start, (farm->start->linked)[i],
 				flag);
 			else if (((farm->start->linked)[0])->path_len !=
-					  ((farm->start->linked)[i])->path_len)
+						((farm->start->linked)[i])->path_len)
 				return ;
-
 		}
 	}
 }

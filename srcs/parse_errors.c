@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_errors.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: swynona <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/06 19:12:15 by swynona           #+#    #+#             */
+/*   Updated: 2020/08/06 22:12:15 by swynona          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
-int 	error_farm(t_farm	*farm)
+int		error_farm(t_farm *farm)
 {
 	t_command	*command;
 
@@ -16,13 +28,13 @@ int 	error_farm(t_farm	*farm)
 	exit(1);
 }
 
-int 	error_rooms(t_farm *farm, char *line)
+int		error_rooms(t_farm *farm, char *line)
 {
 	t_room *room;
 
 	if (line)
 		free(line);
-	while(farm->rooms)
+	while (farm->rooms)
 	{
 		room = farm->rooms->next;
 		if (farm->rooms->name)
@@ -50,7 +62,7 @@ int		error_links(t_farm *farm, char *line, char *room1, char *room2)
 		free(room1);
 	if (room2)
 		free(room2);
-	while(farm->links)
+	while (farm->links)
 	{
 		link = farm->links->next;
 		free(farm->links);

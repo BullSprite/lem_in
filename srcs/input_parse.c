@@ -50,14 +50,16 @@ int 	string_type(t_farm *farm, char *line)
 {
 	t_command	*command;
 
-	if (line[0] == '#' && !(!ft_strcmp(line, "##start") ||
-		!ft_strcmp(line, "##end")))
+	if (!(ft_strncmp(line, "##", 2)) && !(!ft_strcmp(line, "##start") || !ft_strcmp(line, "##end")))
 		return (3);
 	if (!(command = ft_memalloc(sizeof(t_command))) ||
 		!(command->line = ft_strdup(line)))
 		error_links(farm, line, NULL, NULL);
 	command->next = farm->commands;
 	farm->commands = command;
+	if (line[0] == '#' && !(!ft_strcmp(line, "##start") ||
+							!ft_strcmp(line, "##end")))
+		return (3);
 	if (line[0] == '#')
 		return (1);
 	else if (ft_strchr(line, ' '))
@@ -89,17 +91,6 @@ int		parse_rooms(t_farm *farm, char **line)
 	return (0);
 }
 
-void	print_map(t_command *command)
-{
-	if (command == NULL)
-		return ;
-	print_map(command->next);
-	ft_putstr(command->line);
-	ft_putchar('\n');
-	free(command->line);
-	free(command);
-}
-
 t_farm	*input_parse(void)
 {
 	t_farm	*farm;
@@ -110,6 +101,5 @@ t_farm	*input_parse(void)
 		return (0);
 	if (!parse_rooms(farm, &line) || !make_connections(farm))
 		error_links(farm, line, NULL, NULL);
-	print_map(farm->commands);
 	return (farm);
 }

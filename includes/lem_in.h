@@ -100,4 +100,5 @@ int		get_cap(t_room *r1, t_room *r2);
 int		set_cap(t_room *r1, t_room *r2, int cap);
 void	clear_state(t_room *l, t_farm *farm, int flag);
 int		init_capacity(t_room *l, t_farm *farm);
+void	print_map(t_command *command);
 #endif

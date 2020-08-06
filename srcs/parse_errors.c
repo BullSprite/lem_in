@@ -29,6 +29,8 @@ int 	error_rooms(t_farm *farm, char *line)
 			free(farm->rooms->name);
 		if (farm->rooms->linked)
 			free(farm->rooms->linked);
+		if (farm->rooms->capacity)
+			free(farm->rooms->capacity);
 		free(farm->rooms);
 		farm->rooms = room;
 	}

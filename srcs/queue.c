@@ -1,12 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   queue.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: swynona <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/06 19:12:15 by swynona           #+#    #+#             */
+/*   Updated: 2020/08/06 22:12:15 by swynona          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
-void	init_queue(t_room **start)
+void	enqueue(t_room **start, t_room *r)
 {
-}
+	t_room	*node;
 
-void	enqueue(t_room **start,t_room *r)
-{
-	t_room *node;
 	if (start && r)
 	{
 		if (!(*start))

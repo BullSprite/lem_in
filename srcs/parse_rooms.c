@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_rooms.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: swynona <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/06 19:12:15 by swynona           #+#    #+#             */
+/*   Updated: 2020/08/06 22:12:15 by swynona          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
 t_room	*room_init(char **parts, t_type type)
@@ -5,7 +17,8 @@ t_room	*room_init(char **parts, t_type type)
 	t_room	*room;
 	int		i;
 
-	if ((i = -1) && !(room = ft_memalloc(sizeof(t_room))))
+	i = -1;
+	if (!(room = ft_memalloc(sizeof(t_room))))
 	{
 		while (++i < 3)
 			free(parts[i]);
@@ -16,35 +29,20 @@ t_room	*room_init(char **parts, t_type type)
 	room->x = ft_atoi(parts[1]);
 	room->y = ft_atoi(parts[2]);
 	room->type = type;
-	room->idx = 0;
-	room->bfs_lvl = 0;
-	room->capacity = 0;
-	room->input_links = 0;
-	room->output_links = 0;
-	room->links = 0;
-	room->ant = -1;
-	room->next = NULL;
-	room->path_len = MAXINT;
-	room->is_linked_with_start = 0;
-	room->linked = NULL;
-	room->state = 'u';
-	room->parent = 0;
-	room->child = 0;
-	room->ant_queue = NULL;
-	room->step = -1;
-	room->real_len = 0;
+	room_init_additional(room);
 	free(parts[1]);
 	free(parts[2]);
 	free(parts);
 	return (room);
 }
 
-int 	room_set(t_farm *farm, char **parts, t_type type)
+int		room_set(t_farm *farm, char **parts, t_type type)
 {
 	t_room	*room;
 	t_room	*tmp;
 
-	if ((tmp = farm->rooms) == tmp && !(room = room_init(parts, type)) ||
+	tmp = farm->rooms;
+	if (!(room = room_init(parts, type)) ||
 		(!tmp && (farm->rooms = room)))
 		return (1);
 	while (tmp->next)
@@ -69,13 +67,14 @@ int 	room_set(t_farm *farm, char **parts, t_type type)
 void	make_room(t_farm *farm, char *line, t_type type)
 {
 	int		i;
-	int 	len;
+	int		len;
 	char	**parts;
 
-	if ((i = -1) && (line[0] == 'L' || line[0] == '#'  ||
+	if ((i = -1) && (line[0] == 'L' || line[0] == '#' ||
 		!(parts = ft_strsplit(line, ' '))))
 		error_rooms(farm, line);
-	if ((i = -1) && ((len = parts_len(parts)) != 3))
+	i = -1;
+	if (((len = parts_len(parts)) != 3))
 	{
 		while (++i < len)
 			free(parts[i]);
@@ -86,7 +85,7 @@ void	make_room(t_farm *farm, char *line, t_type type)
 		error_rooms(farm, line);
 }
 
-void 	make_start_or_finish(t_farm *farm, char *line, t_type type)
+void	make_start_or_finish(t_farm *farm, char *line, t_type type)
 {
 	t_room	*tmp;
 

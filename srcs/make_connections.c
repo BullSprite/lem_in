@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   make_connections.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: swynona <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/06 19:12:15 by swynona           #+#    #+#             */
+/*   Updated: 2020/08/06 22:12:15 by swynona          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
-int 	make_connections(t_farm *farm)
+int		make_connections(t_farm *farm)
 {
 	t_room	*tmp;
 	t_link	*tmpl;

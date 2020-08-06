@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   technical_funks.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: swynona <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/06 19:12:15 by swynona           #+#    #+#             */
+/*   Updated: 2020/08/06 22:12:15 by swynona          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem_in.h"
 
-int 	is_int(char **parts, int id)
+int		is_int(char **parts, int id)
 {
 	int		i;
 
 	i = -1;
-	if (parts[id][0] == '-' && ft_strcmp(parts[id],"-"))
+	if (parts[id][0] == '-' && ft_strcmp(parts[id], "-"))
 		i++;
 	while (parts[id][++i])
 		if (!ft_isdigit(parts[id][i]))
@@ -19,7 +31,7 @@ int 	is_int(char **parts, int id)
 	return (1);
 }
 
-int 	parts_len(char **parts)
+int		parts_len(char **parts)
 {
 	int i;
 
@@ -38,4 +50,20 @@ void	print_map(t_command *command)
 	ft_putchar('\n');
 	free(command->line);
 	free(command);
+}
+
+void	room_init_additional(t_room *room)
+{
+	room->idx = 0;
+	room->capacity = 0;
+	room->links = 0;
+	room->ant = -1;
+	room->next = NULL;
+	room->path_len = MAXINT;
+	room->linked = NULL;
+	room->state = 'u';
+	room->parent = 0;
+	room->child = 0;
+	room->ant_queue = NULL;
+	room->real_len = 0;
 }

@@ -2,6 +2,15 @@
 
 int 	error_farm(t_farm	*farm)
 {
+	t_command	*command;
+
+	while (farm->commands)
+	{
+		command = farm->commands->next;
+		free(farm->commands->line);
+		free(farm->commands);
+		farm->commands = command;
+	}
 	free(farm);
 	ft_putstr("ERROR\n");
 	exit(1);
@@ -39,14 +48,11 @@ int		error_links(t_farm *farm, char *line, char *room1, char *room2)
 		free(room1);
 	if (room2)
 		free(room2);
-	if (farm->links)
+	while(farm->links)
 	{
-		while(farm->links)
-		{
-			link = farm->links->next;
-			free(farm->links);
-			farm->links = link;
-		}
+		link = farm->links->next;
+		free(farm->links);
+		farm->links = link;
 	}
 	return (error_rooms(farm, line));
 }

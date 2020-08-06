@@ -52,6 +52,12 @@ typedef struct	s_link
 	struct s_link	*next;
 }				t_link;
 
+typedef struct		s_command
+{
+	char				*line;
+	struct s_command	*next;
+}					t_command;
+
 typedef struct		s_farm
 {
 	int				ants;
@@ -63,6 +69,7 @@ typedef struct		s_farm
 	t_room			*finish;
 	t_room 			*rooms;
 	t_link			*links;
+	t_command		*commands;
 }				t_farm;
 
 
@@ -81,7 +88,7 @@ void	enqueue(t_room **start,t_room *r);
 t_room	*dequeue(t_room **start);
 t_room	*bfs(t_room *list, t_farm *farm);
 t_room	**make_paths(t_room *list, t_farm *farm);
-int 	string_type(char *line);
+int 	string_type(t_farm *farm, char *line);
 int		parse_room(t_farm *farm, char *line, int flag);
 int		get_cap(t_room *r1, t_room *r2);
 int		set_cap(t_room *r1, t_room *r2, int cap);

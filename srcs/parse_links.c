@@ -93,15 +93,18 @@ int 	parse_links(t_farm *farm, char *line, int mode)
 {
 	if (mode && !create_links(farm, line))
 		error_links(farm, line, NULL, NULL);
+	ft_strdel(&line);
 	while (get_next_line(0, &line))
 	{
-		if (string_type(line) == 3)
+		string_type(farm, line);
+		if (string_type(farm, line) == 3)
 			continue;
 		if (!create_links(farm, line))
 			error_links(farm, line, NULL, NULL);
+		ft_strdel(&line);
 	}
 	if (!(farm->finish->links) || !(farm->start->links))
 		error_links(farm, line, NULL, NULL);
-	free(line);
+	ft_strdel(&line);
 	return (1);
 }

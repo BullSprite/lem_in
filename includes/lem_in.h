@@ -101,8 +101,8 @@ void					right_path_len(t_farm *farm);
 void					measure_paths(t_room *start, t_farm *farm);
 int						get_cap(t_room *r1, t_room *r2);
 int						set_cap(t_room *r1, t_room *r2, int cap);
-void					clear_state(t_room *l, t_farm *farm, int flag);
-int						init_capacity(t_room *l, t_farm *farm);
+void					clear_state(t_room *l, int flag);
+void					init_capacity(t_room *l);
 void					print_map(t_command *command);
 void					room_init_additional(t_room *room);
 #endif

@@ -20,8 +20,9 @@ void	sort_paths(t_farm *farm)
 	int		tmp1;
 
 	i = -1;
-	while ((farm->start->linked)[++i] && ((j = i) == j))
+	while ((farm->start->linked)[++i])
 	{
+		j = i;
 		while ((farm->start->linked)[++j])
 		{
 			if (((farm->start->linked)[i])->path_len >
@@ -110,9 +111,8 @@ void	measure_paths(t_room *start, t_farm *farm)
 	}
 }
 
-int		main(int argc, char **argv)
+int		main(void)
 {
-	t_room	**paths;
 	t_farm	*farm;
 
 	farm = input_parse();
